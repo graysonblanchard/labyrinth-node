@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT;
-const proxy = process.env.QUOTAGUARDSHIELD_URL;
 
 const sql = require("mssql");
 
@@ -11,6 +10,10 @@ const config = {
   server: process.env.DB_SERVER, 
   database: process.env.DB_NAME
 };
+
+app.use(cors({
+  origin: 'https://gb-labyrinth-react.netlify.app/'
+}));
 
 app.get("/highScores", (req, res) => {
   sql.connect(config, function (err) {
