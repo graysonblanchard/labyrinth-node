@@ -19,6 +19,8 @@ app.get('/highScores', (req, res) => {
       let request = new sql.Request();
          
       request.query('[dbo].[p_Get_Labyrinth_HighScores]', function (err, recordset) {
+        console.log(recordset);
+        
         if (err) {
           console.log(err)
         }
