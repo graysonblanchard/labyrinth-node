@@ -13,7 +13,7 @@ const config = {
 };
 
 app.use(cors({
-  origin: 'https://gb-labyrinth-react.netlify.app/'
+  origin: 'https://gb-labyrinth-react.netlify.app'
 }));
 
 app.get("/highScores", (req, res) => {
