@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT;
+const proxy = process.env.QUOTAGUARDSHIELD_URL;
 
 const sql = require("mssql");
 
@@ -11,7 +12,12 @@ const config = {
   database: process.env.DB_NAME 
 };
 
-app.get('/highScores', (req, res) => {
+const reqOptions = {
+  host: proxy,
+  path: "/highScores",
+};
+
+app.get(reqOptions, (req, res) => {
   sql.connect(config, function (err) {
   
       if (err) console.log(err);
@@ -29,8 +35,7 @@ app.get('/highScores', (req, res) => {
 });
 
 app.post('/highScores', (req, res) => {
-
-console.log('request: ', req)
+  console.log('request: ', req)
 
   // sql.connect(config, function (err) {
   
