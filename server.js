@@ -12,25 +12,21 @@ const config = {
   database: process.env.DB_NAME 
 };
 
-const reqOptions = {
-  host: proxy,
-  path: "/highScores",
-};
-
-app.get(reqOptions, (req, res) => {
+app.get("/highScores", (req, res) => {
+  sql.proxy = proxy;
   sql.connect(config, function (err) {
-  
-      if (err) console.log(err);
+    if (err) console.log(err);
 
-      let request = new sql.Request();
-         
-      request.query('[dbo].[p_Get_Labyrinth_HighScores]', function (err, recordset) {
-        if (err) {
-          console.log(err)
-        }
+    let request = new sql.Request();
+        
+    //request.proxy = proxy;
+    request.query('[dbo].[p_Get_Labyrinth_HighScores]', function (err, recordset) {
+      if (err) {
+        console.log(err)
+      }
 
-        res.send(recordset);
-      });
+      res.send(recordset);
+    });
   });
 });
 
