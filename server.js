@@ -1,12 +1,14 @@
 const express = require('express');
 const app = express();
+const port = process.env.PORT;
 
 const sql = require("mssql");
+
 const config = {
-  user: 'DB_USER',
-  password: 'DB_PASS',
-  server: 'DB_SERVER', 
-  database: 'DB_NAME' 
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  server: process.env.DB_SERVER, 
+  database: process.env.DB_NAME 
 };
 
 app.get('/highScores', (req, res) => {
@@ -46,6 +48,6 @@ console.log('request: ', req)
   // });
 });
 
-app.listen(4000, () => {
-  console.log('Server started on port 4000')
+app.listen(port, () => {
+  console.log('Server started on port ' + port);
 })
