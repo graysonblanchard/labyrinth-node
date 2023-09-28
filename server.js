@@ -36,14 +36,11 @@ app.get("/highScores", (req, res) => {
 app.post('/highScoresPost', (req, res) => {
   let body = '';
 
-  request.on('data', function (data) {
+  req.on('data', function (data) {
       body += data;
-      
-      if (body.length > 1e6)
-          request.connection.destroy();
   });
 
-  request.on('end', function () {
+  req.on('end', function () {
       const postData = qs.parse(body);
 
       sql.connect(config, function (err) {
