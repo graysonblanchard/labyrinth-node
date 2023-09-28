@@ -36,6 +36,7 @@ app.get("/highScores", (req, res) => {
 
 app.post('/highScoresPost', (req, res) => {
   console.log('--- POST HIT ---', req.body)
+  console.log('--- POST HIT string ---', JSON.stringify(req.body))
 
   sql.connect(config, function (err) {
     if (err) console.log(err);
