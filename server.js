@@ -46,6 +46,7 @@ app.post('/highScores', (req, res) => {
     request
       .input('Name', sql.VarChar(50), req.body.name)
       .input('Score', sql.Int, req.body.score)
+      .input('Difficulty', sql.VarChar(50), req.body.difficulty)
       .execute('[dbo].[p_Manage_Labyrinth_HighScores]', function (err, recordset) {
         if (err) {
           console.log(err)
