@@ -22,7 +22,7 @@ app.get("/highScores", (req, res) => {
 
     let request = new sql.Request();
 
-    request.query('[dbo].[p_Get_Labyrinth_HighScores]', function (err, recordset) {
+    request.execute('[dbo].[p_Get_Labyrinth_HighScores]', function (err, recordset) {
       if (err) {
         console.log(err)
       }
@@ -35,20 +35,21 @@ app.get("/highScores", (req, res) => {
 app.post('/highScores', (req, res) => {
   console.log('request: ', req)
 
-  // sql.connect(config, function (err) {
-  
-  //     if (err) console.log(err);
+  sql.connect(config, function (err) {
+      if (err) console.log(err);
 
-  //     let request = new sql.Request();
-         
-  //     request.query('[dbo].[p_Get_Labyrinth_HighScores]', function (err, recordset) {
-  //       if (err) {
-  //         console.log(err)
-  //       }
+      let request = new sql.Request();
 
-  //       res.send(recordset);
-  //     });
-  // });
+      request.input('@Name', sql.VarChar(50), req.name);
+      request.input('@Score', sql.VarChar(50), req.score);
+      request.execute('[dbo].[p_Manage_Labyrinth_HighScores]', function (err, recordset) {
+        if (err) {
+          console.log(err)
+        }
+
+        res.send(recordset);
+      });
+  });
 });
 
 app.listen(port, () => {
