@@ -32,7 +32,7 @@ app.get("/highScores", (req, res) => {
   });
 });
 
-app.post('/highScores', (req, res) => {
+app.get('/highScoresPost', (req, res) => {
   console.log('request: ', req)
 
   sql.connect(config, function (err) {
