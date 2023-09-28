@@ -34,6 +34,7 @@ app.get("/highScores", (req, res) => {
 });
 
 app.post('/highScoresPost', (req, res) => {
+  console.log('--- POST HIT ---', req.body)
   let body = '';
 
   req.on('data', function (data) {
