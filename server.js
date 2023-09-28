@@ -1,9 +1,10 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const port = process.env.PORT;
-
+const qs = require('querystring');
 const sql = require("mssql");
+
+const port = process.env.PORT;
 
 const config = {
   user: process.env.DB_USER,
@@ -33,22 +34,33 @@ app.get("/highScores", (req, res) => {
 });
 
 app.post('/highScoresPost', (req, res) => {
-  console.log('request: ', req)
+  let body = '';
 
-  sql.connect(config, function (err) {
-      if (err) console.log(err);
+  request.on('data', function (data) {
+      body += data;
+      
+      if (body.length > 1e6)
+          request.connection.destroy();
+  });
 
-      let request = new sql.Request();
+  request.on('end', function () {
+      const postData = qs.parse(body);
 
-      request
-        .input('@HighScoreJson', sql.VarChar(100), req.body)
-        .execute('[dbo].[p_Manage_Labyrinth_HighScores]', function (err, recordset) {
-          if (err) {
-            console.log(err)
-          }
-
-          res.send(recordset);
-        });
+      sql.connect(config, function (err) {
+        if (err) console.log(err);
+  
+        let request = new sql.Request();
+  
+        request
+          .input('@HighScoreJson', sql.VarChar(100), postData)
+          .execute('[dbo].[p_Manage_Labyrinth_HighScores]', function (err, recordset) {
+            if (err) {
+              console.log(err)
+            }
+  
+            res.send(recordset);
+          });
+    });
   });
 });
 
