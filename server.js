@@ -36,13 +36,13 @@ app.get("/highScores", (req, res) => {
 
 app.post('/highScoresPost', (req, res) => {
   console.log('--- POST HIT ---', req.body)
-  console.log('--- POST HIT string ---', JSON.stringify(req.body))
-
+  
   sql.connect(config, function (err) {
     if (err) console.log(err);
-
+    
     let request = new sql.Request();
-
+    
+    // to-do: try sending separate params ?
     request
       .input('HighScoreJson', sql.VarChar(100), JSON.stringify(req.body))
       .execute('[dbo].[p_Manage_Labyrinth_HighScores]', function (err, recordset) {
