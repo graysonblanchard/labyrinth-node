@@ -44,7 +44,7 @@ app.post('/highScoresPost', (req, res) => {
     let request = new sql.Request();
 
     request
-      .input('@HighScoreJson', sql.VarChar(100), '{"name":"test","score":0}')
+      .input('HighScoreJson', sql.VarChar(100), JSON.stringify(req.body))
       .execute('[dbo].[p_Manage_Labyrinth_HighScores]', function (err, recordset) {
         if (err) {
           console.log(err)
