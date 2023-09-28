@@ -8,14 +8,6 @@ const qs = require('querystring');
 const bodyParser = require('body-parser')
 const jsonParser = bodyParser.json()
  
-// create application/x-www-form-urlencoded parser
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
- 
-// POST /login gets urlencoded bodies
-app.post('/login', urlencodedParser, function (req, res) {
-  res.send('welcome, ' + req.body.username)
-})
- 
 // POST /api/users gets JSON bodies
 app.post('/api/users', jsonParser, function (req, res) {
   // create user in req.body
@@ -56,30 +48,21 @@ app.get("/highScores", (req, res) => {
 
 app.post('/highScoresPost', jsonParser, (req, res) => {
   console.log('--- POST HIT ---', req.body)
-  let body = '';
 
-  req.on('data', function (data) {
-      body += data;
-  });
+  sql.connect(config, function (err) {
+    if (err) console.log(err);
 
-  req.on('end', function () {
-      const postData = qs.parse(body);
+    let request = new sql.Request();
 
-      sql.connect(config, function (err) {
-        if (err) console.log(err);
-  
-        let request = new sql.Request();
-  
-        request
-          .input('@HighScoreJson', sql.VarChar(100), postData)
-          .execute('[dbo].[p_Manage_Labyrinth_HighScores]', function (err, recordset) {
-            if (err) {
-              console.log(err)
-            }
-  
-            res.send(recordset);
-          });
-    });
+    request
+      .input('@HighScoreJson', sql.VarChar(100), req.body)
+      .execute('[dbo].[p_Manage_Labyrinth_HighScores]', function (err, recordset) {
+        if (err) {
+          console.log(err)
+        }
+
+        res.send(recordset);
+      });
   });
 });
 
