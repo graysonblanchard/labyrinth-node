@@ -42,10 +42,10 @@ app.post('/highScores', (req, res) => {
     
     let request = new sql.Request();
     
-    // to-do: try sending separate params again ?
     request
       .input('Name', sql.VarChar(50), req.body.name)
       .input('Score', sql.Int, req.body.score)
+      .input('Moves', sql.Int, req.body.moves)
       .input('Difficulty', sql.VarChar(50), req.body.difficulty)
       .execute('[dbo].[p_Manage_Labyrinth_HighScores]', function (err, recordset) {
         if (err) {
