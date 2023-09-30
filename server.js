@@ -3,6 +3,8 @@ const app = express();
 const cors = require('cors');
 const sql = require("mssql");
 
+require('dotenv').config();
+
 const port = process.env.PORT;
 
 const config = {
@@ -13,12 +15,14 @@ const config = {
 };
 
 app.use(cors({
-  origin: 'https://gb-labyrinth-react.netlify.app'
+  origin: process.env.CORS_ORIGIN
 }));
 
 app.use(express.json());
 
 app.get("/highScores", (req, res) => {
+  console.log('--- GET HIT ---', req.body)
+  
   sql.connect(config, function (err) {
     if (err) console.log(err);
 
