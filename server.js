@@ -21,8 +21,8 @@ app.use(cors({
 app.use(express.json());
 
 app.get("/highScores", (req, res) => {
-  console.log('--- GET HIT ---', req.body)
-  
+  console.log('--- GET HIT ---')
+
   sql.connect(config, function (err) {
     if (err) console.log(err);
 
